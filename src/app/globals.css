@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/*
+ * Palette "santé" : blanc, bleu professionnel, touche de rose. Choix
+ * délibérément unique (thème clair uniquement pour l'instant, engagement
+ * assumé plutôt que light/dark par défaut) — voir ROADMAP.md section 10.
+ */
+:root {
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-border: #e3e8f0;
+
+  --color-text: #10182b;
+  --color-text-muted: #5b6472;
+  --color-text-faint: #93999f;
+
+  --color-primary: #1657cc;
+  --color-primary-hover: #12489e;
+  --color-primary-foreground: #ffffff;
+  --color-primary-soft: #eaf1fd;
+
+  --color-accent: #e8677e;
+  --color-accent-soft: #fdedf1;
+
+  --color-success: #1a8f5e;
+  --color-success-soft: #e8f6ef;
+  --color-warning: #b5750f;
+  --color-warning-soft: #fbf1de;
+  --color-danger: #c23a3a;
+  --color-danger-soft: #fbeaea;
+  /* Distinct de --color-primary : réservé aux messages/badges informatifs
+     neutres (ex. "en attente", note contextuelle) — jamais un appel à l'action. */
+  --color-info: #2f6fb0;
+  --color-info-soft: #eaf3fb;
+
+  /* Bleu nuit institutionnel : surfaces sombres de la vitrine uniquement
+     (footer, bandeau d'appel à l'action). Jamais utilisé dans les dashboards. */
+  --color-navy: #0a1a38;
+  --color-navy-deep: #06122a;
+
+  /* --shadow-soft : cartes/surfaces au repos. --shadow-elevated : contenu
+     flottant au-dessus du reste (Modal, Dropdown, Toast). */
+  /* --shadow-card : relief très discret des cartes de dashboard (Phase 6),
+     juste assez pour détacher la surface du fond bg-subtle. */
+  --shadow-card: 0 1px 2px rgba(16, 24, 43, 0.04), 0 1px 1px rgba(16, 24, 43, 0.02);
+  --shadow-soft: 0 1px 2px rgba(16, 24, 43, 0.04), 0 8px 24px -12px rgba(22, 87, 204, 0.12);
+  --shadow-elevated: 0 4px 8px rgba(16, 24, 43, 0.06), 0 16px 40px -12px rgba(16, 24, 43, 0.18);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+}
+
+/*
+ * Hiérarchie typographique (Phase 1 — formalisée, pas de nouvelles classes
+ * utilitaires : Tailwind + les deux familles ci-dessous suffisent déjà).
+ * Composants à construire en Phase 2 : respecter ces couples classe/usage.
+ *
+ *   Niveau              Classes de référence                         Usage
+ *   Titre de page (h1)  font-display text-2xl/text-3xl font-bold     En-tête de page
+ *   Titre de section    font-display text-lg/text-xl font-semibold   En-tête de carte/section
+ *   Corps de texte      font-sans text-sm text-text                  Contenu courant
+ *   Texte secondaire    font-sans text-sm text-text-muted            Sous-titres, descriptions
+ *   Label de champ      font-sans text-sm font-medium text-text      Labels de formulaire
+ *   Caption / meta      font-sans text-xs text-text-faint            Horodatages, mentions annexes
+ *   Donnée chiffrée     font-display font-bold tabular-nums          KPI, StatCard, scores
+ *
+ * Pas de dark mode pour l'instant — thème clair unique assumé (choix
+ * délibéré, voir commentaire en tête de fichier), à revisiter seulement sur
+ * demande explicite plutôt que par ajout silencieux de media queries.
+ */
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-subtle: var(--color-bg-subtle);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-faint: var(--color-text-faint);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-success: var(--color-success);
+  --color-success-soft: var(--color-success-soft);
+  --color-warning: var(--color-warning);
+  --color-warning-soft: var(--color-warning-soft);
+  --color-danger: var(--color-danger);
+  --color-danger-soft: var(--color-danger-soft);
+  --color-info: var(--color-info);
+  --color-info-soft: var(--color-info-soft);
+  --color-navy: var(--color-navy);
+  --color-navy-deep: var(--color-navy-deep);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Typographie des documents légaux (CGU, confidentialité) : contenu rédigé en
+   JSX simple, stylé ici plutôt que classe par classe. */
+.legal-contenu > * + * {
+  margin-top: 1rem;
+}
+.legal-contenu ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.legal-contenu li + li {
+  margin-top: 0.4rem;
+}
+.legal-contenu li::marker {
+  color: var(--color-primary);
+}
+.legal-contenu strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.legal-contenu a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-contenu table {
+  width: 100%;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+}
+.legal-contenu th {
+  text-align: left;
+  color: var(--color-text);
+  font-weight: 600;
+}
+.legal-contenu th,
+.legal-contenu td {
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.6rem 0.75rem 0.6rem 0;
+  vertical-align: top;
+}
+
+::selection {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+}
+
+/* Barre de défilement discrète pour les zones scrollables internes (menu de
+   la sidebar) : visible seulement au survol, comme sur les consoles SaaS. */
+.scrollbar-fin {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scrollbar-fin:hover {
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* Phase 6 : anneau de focus clavier cohérent sur les éléments interactifs
+   (n'apparaît qu'à la navigation clavier, jamais au clic souris). Les champs
+   de formulaire gardent leur propre style focus:ring existant. */
+:where(a, button, summary, [role="tab"], [role="menuitem"], [role="menuitemcheckbox"]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
